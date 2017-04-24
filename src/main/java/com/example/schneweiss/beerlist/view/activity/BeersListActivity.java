@@ -145,15 +145,12 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //adapter.getFilter().filter(newText);
                 List<Beer> filteredBeers = new ArrayList<Beer>();
                 for(Beer beer : beers){
                     if(beer.getName().startsWith(newText)){
                         filteredBeers.add(beer);
                     }
                 }
-
-
 
                 adapter = new BeersListAdapter(getApplicationContext(), filteredBeers);
                 listView.setAdapter(adapter);
