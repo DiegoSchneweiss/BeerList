@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.schneweiss.beerlist.R;
 import com.example.schneweiss.beerlist.controller.BeersListController;
@@ -77,7 +76,6 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
                     isFavorite = true;
                 }
                 new BeersListController((BeersResultService) getContext()).saveFavoriteBeerDb(beer, isFavorite);
-                Toast.makeText(getContext(),"")
             }
         });
 
