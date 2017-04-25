@@ -22,18 +22,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BeersWS {
 
-    private BeersListService service;
-    private BeersResultService view;
+    private static BeersListService service;
+    private static BeersResultService view;
+    private static BeersWS beersWS;
+    private static Retrofit retrofit;
 
-    public BeersWS(BeersResultService view){
-        Retrofit retrofit = new Retrofit.Builder()
+    private BeersWS(){
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BeersListService.URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
 
+    public static synchronized BeersWS getInstance(BeersResultService resultView) {
+        if(beersWS == null){
+           beersWS = new BeersWS();
+        }
         service = retrofit.create(BeersListService.class);
-        this.view = view;
+        view = resultView;
+
+        return beersWS;
     }
 
     public void listBeers(){

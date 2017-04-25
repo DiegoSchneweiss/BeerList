@@ -17,6 +17,7 @@ public class Beer extends RealmObject implements Serializable{
     private String tagline;
     private String description;
     private String image_url;
+    private boolean favorite;
 
     public int getId() {
         return id;
@@ -58,5 +59,11 @@ public class Beer extends RealmObject implements Serializable{
         this.description = description;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
 
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 }

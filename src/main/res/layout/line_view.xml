@@ -10,14 +10,14 @@
         android:layout_height="60dp" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="60dp">
 
         <TextView
             android:id="@+id/name_beer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#000"
             android:text="teste1"
@@ -28,26 +28,20 @@
             android:id="@+id/tagline_beer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textColor="@color/colorSecondaryDark"
             android:text="teste subtitulo"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"/>
 
-        <!--<TextView
-            android:id="@+id/right"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:layout_alignParentRight="true"
-            android:text=">"
-            android:layout_alignTop="@+id/title_beer"/>-->
-
     </RelativeLayout>
 
-
-
+    <ImageView android:id="@+id/favorite"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/off"
+        android:background="#00ffffff"
+        android:layout_alignRight="@+id/tagline_beer"
+        android:layout_marginRight="5dp"/>
 
 </LinearLayout>

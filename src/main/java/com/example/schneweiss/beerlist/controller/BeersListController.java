@@ -14,18 +14,15 @@ import java.util.List;
 
 public class BeersListController {
 
-    private static BeersListController singleton;
     private BeersWS beersWs;
     private BeersDao beersDao;
 
     public BeersListController(BeersResultService view){
-        Configuration configuration = new Configuration();
-        configuration.onCreate();
-        this.beersDao = new BeersDao();
-        this.beersWs = new BeersWS(view);
+        this.beersDao = BeersDao.getInstance();
+        this.beersWs = BeersWS.getInstance(view);
     }
 
-    public void listBeers(){
+    public void listBeersWs(){
         this.beersWs.listBeers();
     }
 
@@ -33,7 +30,13 @@ public class BeersListController {
         return this.beersDao.getBeersDb();
     }
 
-    public void saveBeersDb(List<Beer> arrayOfBeers) {
-        this.beersDao.saveBeer(arrayOfBeers);
+    public Beer getBeerDbById(int idBeer){
+        return this.beersDao.getBeerDbById(idBeer);
     }
+
+    public void saveBeersDb(List<Beer> arrayOfBeers) {
+        this.beersDao.saveBeersDb(arrayOfBeers);
+    }
+
+    public void saveFavoriteBeerDb(Beer beer, boolean isFavorite){this.beersDao.saveFavoriteBeerDb(beer, isFavorite); }
 }

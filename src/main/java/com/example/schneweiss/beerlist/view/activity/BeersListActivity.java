@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,11 +49,11 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
         controller = new BeersListController(this);
 
         if(checkConnection()){
-            controller.listBeers();
+            controller.listBeersWs();
             showMessage("Aguarde..", false);
         }else {
             //Offline access
-            List beers = controller.getBeersDb();
+            beers = controller.getBeersDb();
             if(beers.size() > 0){
                 adapter = new BeersListAdapter(this, beers);
                 listView.setAdapter(adapter);
@@ -66,7 +65,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
     }
 
     @OnItemClick(R.id.listView)
-    public void onItemClick(AdapterView<?> parent, int position) {
+    public void startNewScreen(AdapterView<?> parent, int position) {
         Beer beer = beers.get(position);
         Intent intent = new Intent(this, BeerDetailActivity.class);
         intent.putExtra("beer", beer);
@@ -74,7 +73,6 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
     }
 
     public void loadResults(List<Beer> result){
-        controller.saveBeersDb(result);
         beers = result;
 
         if(dialogAguarde.isShowing()) {
@@ -111,7 +109,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
                     @Override
                     public void onClick(View view) {
                         if(checkConnection()){
-                            controller.listBeers();
+                            controller.listBeersWs();
                             showMessage("Aguarde..", false);
                         }
                     }
@@ -152,7 +150,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
                     }
                 }
 
-                adapter = new BeersListAdapter(getApplicationContext(), filteredBeers);
+                adapter = new BeersListAdapter(BeersListActivity.this, filteredBeers);
                 listView.setAdapter(adapter);
                 synchronized(listView.getAdapter()){
                     listView.getAdapter().notify();

@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.schneweiss.beerlist.R;
+import com.example.schneweiss.beerlist.controller.BeersListController;
 import com.example.schneweiss.beerlist.model.entity.Beer;
+import com.example.schneweiss.beerlist.service.BeersResultService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Schneweiss on 21/04/2017.
@@ -33,9 +37,13 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        // Get the data item for this position
-        Beer beer = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
+        final Beer beer = getItem(position);
+
+        Beer beerDb = new BeersListController((BeersResultService) getContext()).getBeerDbById(beer.getId());
+        if(beerDb != null) {
+            beer.setFavorite(beerDb.isFavorite());
+        }
+
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -44,12 +52,32 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
             convertView.setTag(holder);
         }
 
-        // Populate the data into the template view using the data object
         holder.textViewNameBeer.setText(beer.getName());
         holder.textViewTagLineBeer.setText(beer.getTagline());
         Picasso.with(getContext()).load(beer.getImage_url()).into(holder.imageViewBeer);
 
-        // Return the completed view to render on screen
+        if(beer.isFavorite()){
+            Picasso.with(getContext()).load(R.drawable.on).into(holder.favoriteBeer);
+        }else{
+            Picasso.with(getContext()).load(R.drawable.off).into(holder.favoriteBeer);
+        }
+
+        holder.favoriteBeer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageButton = (ImageView) v;
+                boolean isFavorite;
+                if(beer.isFavorite()){
+                    Picasso.with(getContext()).load(R.drawable.off).into(imageButton);
+                    isFavorite = false;
+                }else{
+                    Picasso.with(getContext()).load(R.drawable.on).into(imageButton);
+                    isFavorite = true;
+                }
+                new BeersListController((BeersResultService) getContext()).saveFavoriteBeerDb(beer, isFavorite);
+            }
+        });
+
         return convertView;
     }
 
@@ -58,6 +86,7 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
         @BindView(R.id.image_beer) ImageView imageViewBeer;
         @BindView(R.id.name_beer) TextView textViewNameBeer;
         @BindView(R.id.tagline_beer) TextView textViewTagLineBeer;
+        @BindView(R.id.favorite) ImageView favoriteBeer;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
