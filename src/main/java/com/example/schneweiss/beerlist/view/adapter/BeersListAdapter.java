@@ -42,7 +42,9 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
 
         Beer beerDb = new BeersListController((BeersResultService) getContext()).getBeerDbById(beer.getId());
         if(beerDb != null) {
-            beer.setFavorite(beerDb.isFavorite());
+            new BeersListController((BeersResultService) getContext()).saveFavoriteBeerDb(beer, beerDb.isFavorite());
+        }else{
+            new BeersListController((BeersResultService) getContext()).saveFavoriteBeerDb(beer, false);
         }
 
         if (convertView != null) {
