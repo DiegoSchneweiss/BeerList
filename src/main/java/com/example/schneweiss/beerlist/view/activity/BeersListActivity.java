@@ -38,6 +38,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
     private BeersListAdapter adapter;
     private ProgressDialog dialogAguarde;
     private List<Beer> beers;
+    private List<Beer> filteredBeers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
             //Offline access
             beers = controller.getBeersDb();
             if(beers.size() > 0){
+                filteredBeers = beers;
                 adapter = new BeersListAdapter(this, beers);
                 listView.setAdapter(adapter);
                 Toast.makeText(getApplicationContext(),"Lista offline carregada", Toast.LENGTH_LONG).show();
@@ -66,7 +68,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
 
     @OnItemClick(R.id.listView)
     public void startNewScreen(AdapterView<?> parent, int position) {
-        Beer beer = beers.get(position);
+        Beer beer = filteredBeers.get(position);
         Intent intent = new Intent(this, BeerDetailActivity.class);
         intent.putExtra("idBeer", beer.getId());
         startActivity(intent);
@@ -74,6 +76,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
 
     public void loadResults(List<Beer> result){
         beers = result;
+        filteredBeers = result;
 
         if(dialogAguarde.isShowing()) {
             dialogAguarde.dismiss();
@@ -143,7 +146,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<Beer> filteredBeers = new ArrayList<Beer>();
+                filteredBeers = new ArrayList<Beer>();
                 for(Beer beer : beers){
                     if(beer.getName().startsWith(newText)){
                         filteredBeers.add(beer);
