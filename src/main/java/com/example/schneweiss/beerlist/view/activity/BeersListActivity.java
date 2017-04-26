@@ -68,7 +68,7 @@ public class BeersListActivity extends AppCompatActivity implements BeersResultS
     public void startNewScreen(AdapterView<?> parent, int position) {
         Beer beer = beers.get(position);
         Intent intent = new Intent(this, BeerDetailActivity.class);
-        intent.putExtra("beer", beer);
+        intent.putExtra("idBeer", beer.getId());
         startActivity(intent);
     }
 

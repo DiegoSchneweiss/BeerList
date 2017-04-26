@@ -8,13 +8,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.schneweiss.beerlist.R;
+import com.example.schneweiss.beerlist.controller.BeersListController;
 import com.example.schneweiss.beerlist.model.entity.Beer;
+import com.example.schneweiss.beerlist.service.BeersResultService;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeerDetailActivity extends AppCompatActivity {
+public class BeerDetailActivity extends AppCompatActivity implements BeersResultService {
 
     @BindView(R.id.image_beer) ImageView imageViewBeer;
     @BindView(R.id.name_beer) TextView textViewNameBeer;
@@ -30,10 +34,16 @@ public class BeerDetailActivity extends AppCompatActivity {
         ButterKnife.setDebug(true);
 
         Intent intent = getIntent();
-        Beer beer = (Beer) intent.getSerializableExtra("beer");
+        int idBeer = (int) intent.getSerializableExtra("idBeer");
+        Beer beer = new BeersListController(this).getBeerDbById(idBeer);
         textViewNameBeer.setText(beer.getName());
         textViewTaglineBeer.setText(beer.getTagline());
         textViewDescriptionBeer.setText(beer.getDescription());
-        Picasso.with(getApplicationContext()).load(beer.getImage_url()).into(imageViewBeer);
+        Picasso.with(getApplicationContext()).load(beer.getImageUrl()).into(imageViewBeer);
+    }
+
+    @Override
+    public void loadResults(List<Beer> result) {
+
     }
 }

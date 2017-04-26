@@ -55,9 +55,13 @@ public class BeersListAdapter extends ArrayAdapter<Beer> {
             convertView.setTag(holder);
         }
 
-        holder.textViewNameBeer.setText(beer.getName());
+        if(beer.haveLongName()){
+            holder.textViewNameBeer.setText(beer.getName().substring(0,Beer.maxlengthName));
+        }else {
+            holder.textViewNameBeer.setText(beer.getName());
+        }
         holder.textViewTagLineBeer.setText(beer.getTagline());
-        Picasso.with(getContext()).load(beer.getImage_url()).into(holder.imageViewBeer);
+        Picasso.with(getContext()).load(beer.getImageUrl()).into(holder.imageViewBeer);
 
         if(beer.isFavorite()){
             Picasso.with(getContext()).load(R.drawable.on).into(holder.favoriteBeer);

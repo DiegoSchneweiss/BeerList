@@ -1,8 +1,11 @@
 package com.example.schneweiss.beerlist.model.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -11,12 +14,16 @@ import io.realm.annotations.PrimaryKey;
 
 public class Beer extends RealmObject implements Serializable{
 
+    @Ignore
+    public static final int maxlengthName = 28;
+
     @PrimaryKey
     private int id;
     private String name;
     private String tagline;
     private String description;
-    private String image_url;
+    @SerializedName("image_url")
+    private String imageUrl;
     private boolean favorite;
 
     public int getId() {
@@ -43,12 +50,12 @@ public class Beer extends RealmObject implements Serializable{
         this.tagline = tagline;
     }
 
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
@@ -65,5 +72,12 @@ public class Beer extends RealmObject implements Serializable{
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public boolean haveLongName(){
+        if(getName().length() > this.maxlengthName){
+            return true;
+        }
+        return false;
     }
 }
